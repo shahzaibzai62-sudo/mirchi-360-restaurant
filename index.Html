@@ -1,0 +1,720 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mirchi 360</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+
+<style>
+body{
+    margin:0;
+    font-family:Poppins;
+    background:#f5f5f5;
+}
+
+/* HEADER */
+header{
+    background:#ff2b85;
+    color:white;
+    padding:15px 20px;
+    display:flex;
+    justify-content:space-between;
+}
+
+/* LAYOUT */
+.container{
+    display:flex;
+}
+
+/* LEFT MENU */
+.menu{
+    width:70%;
+    padding:20px;
+}
+
+/* SEARCH */
+.search{
+    width:100%;
+    padding:10px;
+    margin-bottom:20px;
+    border-radius:8px;
+    border:none;
+}
+
+/* FOOD CARD */
+.card{
+    display:flex;
+    background:white;
+    margin-bottom:15px;
+    border-radius:10px;
+    overflow:hidden;
+    box-shadow:0 5px 15px rgba(0,0,0,0.1);
+}
+
+.card img{https://ibb.co/1YJ3BfDt
+    width:120px;
+    height:100%;
+    object-fit:cover;
+}
+
+.card-content{https://ibb.co/1YJ3BfDt
+    padding:10px;
+    flex:1;
+}
+
+.card button{
+    background:#ff2b85;
+    border:none;
+    color:white;
+    padding:10px;
+    cursor:pointer;
+}
+
+/* CART */
+.cart{
+    width:30%;
+    background:white;
+    padding:15px;
+    height:100vh;
+    position:sticky;
+    top:0;
+    border-left:1px solid #ddd;
+}
+
+.cart-item{https://ibb.co/jc554rv
+    border-bottom:1px solid #ddd;
+    margin-bottom:10px;
+    padding-bottom:5px;
+}
+
+.controls button{
+    margin:2px;
+}
+
+/* TOTAL */
+.total{
+    font-weight:bold;
+    margin-top:10px;
+}
+
+/* CHECKOUT */
+.checkout input{
+    width:100%;
+    padding:8px;
+    margin:5px 0;
+}
+
+/* BUTTON */
+.order-btn{
+    width:100%;
+    padding:10px;
+    background:#25D366;
+    border:none;
+    color:white;
+    cursor:pointer;
+    margin-top:10px;
+}
+
+/* MOBILE */
+@media(max-width:768px){
+    .container{
+        flex-direction:column;
+    }
+    .menu,.cart{
+        width:100%;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <h2>Mirchi 360</h2>
+    <p>🔥 Order Food</p>
+</header>
+
+<div class="container">
+
+<!-- MENU -->
+<div class="menu">
+
+<input type="text" class="search" placeholder="Search food..." onkeyup="searchFood(this.value)">
+
+<div id="food-list">
+
+<div class="card" data-name="burger">
+<img src="burger.jpg">https://ibb.co/fdTXpt0w
+<div class="card-content">
+<h3>Burger</h3>
+<p>Rs 500</p>
+<button onclick="addToCart('Burger',500)">Add</button>
+</div>
+</div>
+
+<div class="card" data-name="pizza">
+<img src="pizza.jpg"https://ibb.co/kgDJJ0kJ>
+<div class="card-content">
+<h3>Pizza</h3>
+<p>Rs 1200</p>
+<button onclick="addToCart('Pizza',1200)">Add</button>
+</div>
+</div>
+
+<div class="card" data-name="bbq">
+<img src="bbq.jpg">
+<div class="card-content">
+<h3>BBQ</h3>
+<p>Rs 800</p>
+<button onclick="addToCart('BBQ',800)">Add</button>
+</div>
+</div>
+
+</div>
+</div>
+
+<!-- CART -->
+<div class="cart">
+<h3>🛒 Cart</h3>
+<div id="cart"></div>
+<div class="total">Total: Rs <span id="total">0</span></div>
+
+<div class="checkout">
+<input id="name" placeholder="Name">
+<input id="phone" placeholder="Phone">
+<input id="address" placeholder="Address">
+</div>
+
+<button class="order-btn" onclick="order()">Place Order</button>
+</div>
+
+</div>
+
+<script>
+let cart={};
+
+function addToCart(name,price){
+    if(cart[name]) cart[name].qty++;
+    else cart[name]={price:price,qty:1};
+    render();
+}
+
+function change(name,val){
+    cart[name].qty+=val;
+    if(cart[name].qty<=0) delete cart[name];
+    render();
+}
+
+function render(){
+    let html="",total=0;
+
+    for(let item in cart){
+        let d=cart[item];
+        total+=d.price*d.qty;
+
+        html+=`
+        <div class="cart-item">
+        ${item} x${d.qty} = Rs ${d.price*d.qty}
+        <div class="controls">
+        <button onclick="change('${item}',1)">+</button>
+        <button onclick="change('${item}',-1)">-</button>
+        </div>
+        </div>`;
+    }
+
+    document.getElementById("cart").innerHTML=html;
+    document.getElementById("total").innerText=total;
+}
+
+function order(){
+    let name=document.getElementById("name").value;
+    let phone=document.getElementById("phone").value;
+    let address=document.getElementById("address").value;
+
+    let msg=`Order:%0AName:${name}%0APhone:${phone}%0AAddress:${address}%0A`;
+
+    let total=0;
+
+    for(let item in cart){
+        let d=cart[item];
+        msg+=`${item} x${d.qty} = Rs ${d.price*d.qty}%0A`;
+        total+=d.price*d.qty;
+    }
+
+    msg+=`Total: Rs ${total}`;
+
+    window.open("https://wa.me/923000000000?text="+msg);
+}
+
+function searchFood(value){
+    let cards=document.querySelectorAll(".card");
+    value=value.toLowerCase();
+
+    cards.forEach(card=>{
+        let name=card.getAttribute("data-name");
+        if(name.includes(value)){
+            card.style.display="flex";
+        }else{
+            card.style.display="none";
+        }
+    });
+}
+</script>
+
+</body><!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Mirchi 360 Builder</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+body{
+    font-family:Poppins;
+    margin:0;
+    display:flex;
+    background:#111;
+    color:white;
+}
+
+/* ADMIN */
+.admin{
+    width:35%;
+    padding:20px;
+    background:#1c1c1c;
+}
+
+input{
+    width:100%;
+    padding:10px;
+    margin:5px 0;
+}
+
+button{
+    padding:10px;
+    width:100%;
+    background:#ff2b85;
+    border:none;
+    color:white;
+    cursor:pointer;
+}
+
+/* LIVE SITE */
+.site{
+    width:65%;
+    padding:20px;
+    background:#f5f5f5;
+    color:black;
+}
+
+header{
+    background:#ff2b85;
+    color:white;
+    padding:10px;
+    text-align:center;
+}
+
+/* MENU */
+.card{
+    background:white;
+    margin:10px 0;
+    padding:10px;
+    display:flex;
+    border-radius:10px;
+    align-items:center;
+}
+
+.card img{
+    width:80px;
+    height:80px;
+    object-fit:cover;
+    border-radius:10px;
+    margin-right:10px;
+}
+</style>
+</head>
+
+<body>
+
+<!-- ADMIN PANEL -->
+<div class="admin">
+<h2>🛠 Admin Panel</h2>
+
+<h4>Logo Name</h4>
+<input id="logoText" placeholder="Mirchi 360">
+<button onclick="updateLogo()">Update Logo</button>
+
+<hr>
+
+<h4>Add Menu Item</h4>
+<input id="name" placeholder="Food Name">
+<input id="price" placeholder="Price">
+<input id="img" placeholder="Image URL">
+<button onclick="addItem()">Add Item</button>
+</div>
+
+<!-- LIVE SITE -->
+<div class="site">
+
+<header>
+<h2 id="logo">Mirchi 360</h2>
+</header>
+
+<h3>🍽 Menu</h3>
+<div id="menu"></div>
+
+</div>
+
+<script>
+let menu = JSON.parse(localStorage.getItem("menu")) || [];
+
+function addItem(){
+    let item = {
+        name: document.getElementById("name").value,
+        price: document.getElementById("price").value,
+        img: document.getElementById("img").value
+    };
+
+    menu.push(item);
+    localStorage.setItem("menu", JSON.stringify(menu));
+    render();
+}
+
+function render(){
+    let html = "";
+
+    menu.forEach(item=>{
+        html += `
+        <div class="card">
+            <img src="${item.img}">
+            <div>
+                <h4>${item.name}</h4>
+                <p>Rs ${item.price}</p>
+            </div>
+        </div>
+        `;
+    });
+
+    document.getElementById("menu").innerHTML = html;
+}
+
+function updateLogo(){
+    let text = document.getElementById("logoText").value;
+    document.getElementById("logo").innerText = text;
+    localStorage.setItem("logo", text);
+}
+
+/* LOAD */
+window.onload = ()=>{
+    document.getElementById("logo").innerText = localStorage.getItem("logo") || "Mirchi 360";
+    render();
+};
+</script>
+
+</body>
+</html><!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Mirchi 360 Builder</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+body{
+    font-family:Poppins;
+    margin:0;
+    display:flex;
+    background:#111;
+    color:white;
+}
+
+/* ADMIN */
+.admin{
+    width:35%;
+    padding:20px;
+    background:#1c1c1c;
+}
+
+input{
+    width:100%;
+    padding:10px;
+    margin:5px 0;
+}
+
+button{
+    padding:10px;
+    width:100%;
+    background:#ff2b85;
+    border:none;
+    color:white;
+    cursor:pointer;
+}
+
+/* LIVE SITE */
+.site{
+    width:65%;
+    padding:20px;
+    background:#f5f5f5;
+    color:black;
+}
+
+header{
+    background:#ff2b85;
+    color:white;
+    padding:10px;
+    text-align:center;
+}
+
+/* MENU */
+.card{
+    background:white;
+    margin:10px 0;
+    padding:10px;
+    display:flex;
+    border-radius:10px;
+    align-items:center;
+}
+
+.card img{
+    width:80px;
+    height:80px;
+    object-fit:cover;
+    border-radius:10px;
+    margin-right:10px;
+}
+</style>
+</head>
+
+<body>
+
+<!-- ADMIN PANEL -->
+<div class="admin">
+<h2>🛠 Admin Panel</h2>
+
+<h4>Logo Name</h4>
+<input id="logoText" placeholder="Mirchi 360">
+<button onclick="updateLogo()">Update Logo</button>
+
+<hr>
+
+<h4>Add Menu Item</h4>
+<input id="name" placeholder="Food Name">
+<input id="price" placeholder="Price">
+<input id="img" placeholder="Image URL">
+<button onclick="addItem()">Add Item</button>
+</div>
+
+<!-- LIVE SITE -->
+<div class="site">
+
+<header>
+<h2 id="logo">Mirchi 360</h2>
+</header>
+
+<h3>🍽 Menu</h3>
+<div id="menu"></div>
+
+</div>
+
+<script>
+let menu = JSON.parse(localStorage.getItem("menu")) || [];
+
+function addItem(){
+    let item = {
+        name: document.getElementById("name").value,
+        price: document.getElementById("price").value,
+        img: document.getElementById("img").value
+    };
+
+    menu.push(item);
+    localStorage.setItem("menu", JSON.stringify(menu));
+    render();
+}
+
+function render(){
+    let html = "";
+
+    menu.forEach(item=>{
+        html += `
+        <div class="card">
+            <img src="${item.img}">
+            <div>
+                <h4>${item.name}</h4>
+                <p>Rs ${item.price}</p>
+            </div>
+        </div>
+        `;
+    });
+
+    document.getElementById("menu").innerHTML = html;
+}
+
+function updateLogo(){
+    let text = document.getElementById("logoText").value;
+    document.getElementById("logo").innerText = text;
+    localStorage.setItem("logo", text);
+}
+
+/* LOAD */
+window.onload = ()=>{
+    document.getElementById("logo").innerText = localStorage.getItem("logo") || "Mirchi 360";
+    render();
+};
+</script>
+
+</body>
+
+</html><!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Mirchi 360 Builder</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+body{
+    font-family:Poppins;
+    margin:0;
+    display:flex;
+    background:#111;
+    color:white;
+}
+
+/* ADMIN */
+.admin{
+    width:35%;
+    padding:20px;
+    background:#1c1c1c;
+}
+
+input{
+    width:100%;
+    padding:10px;
+    margin:5px 0;
+}
+
+button{
+    padding:10px;
+    width:100%;
+    background:#ff2b85;
+    border:none;
+    color:white;
+    cursor:pointer;
+}
+
+/* LIVE SITE */
+.site{
+    width:65%;
+    padding:20px;
+    background:#f5f5f5;
+    color:black;
+}
+
+header{
+    background:#ff2b85;
+    color:white;
+    padding:10px;
+    text-align:center;
+}
+
+/* MENU */
+.card{
+    background:white;
+    margin:10px 0;
+    padding:10px;
+    display:flex;
+    border-radius:10px;
+    align-items:center;
+}
+
+.card img{
+    width:80px;
+    height:80px;
+    object-fit:cover;
+    border-radius:10px;
+    margin-right:10px;
+}
+</style>
+</head>
+
+<body>
+
+<!-- ADMIN PANEL -->
+<div class="admin">
+<h2>🛠 Admin Panel</h2>
+
+<h4>Logo Name</h4>
+<input id="logoText" placeholder="Mirchi 360">
+<button onclick="updateLogo()">Update Logo</button>
+
+<hr>
+
+<h4>Add Menu Item</h4>
+<input id="name" placeholder="Food Name">
+<input id="price" placeholder="Price">
+<input id="img" placeholder="Image URL">
+<button onclick="addItem()">Add Item</button>
+</div>
+
+<!-- LIVE SITE -->
+<div class="site">
+
+<header>
+<h2 id="logo">Mirchi 360</h2>
+</header>
+
+<h3>🍽 Menu</h3>
+<div id="menu"></div>
+
+</div>
+
+<script>
+let menu = JSON.parse(localStorage.getItem("menu")) || [];
+
+function addItem(){
+    let item = {
+        name: document.getElementById("name").value,
+        price: document.getElementById("price").value,
+        img: document.getElementById("img").value
+    };
+
+    menu.push(item);
+    localStorage.setItem("menu", JSON.stringify(menu));
+    render();
+}
+
+function render(){
+    let html = "";
+
+    menu.forEach(item=>{
+        html += `
+        <div class="card">
+            <img src="${item.img}">
+            <div>
+                <h4>${item.name}</h4>
+                <p>Rs ${item.price}</p>
+            </div>
+        </div>
+        `;
+    });
+
+    document.getElementById("menu").innerHTML = html;
+}
+
+function updateLogo(){
+    let text = document.getElementById("logoText").value;
+    document.getElementById("logo").innerText = text;
+    localStorage.setItem("logo", text);
+}
+
+/* LOAD */
+window.onload = ()=>{
+    document.getElementById("logo").innerText = localStorage.getItem("logo") || "Mirchi 360";
+    render();
+};
+</script>
+
+</body>
+</html>
