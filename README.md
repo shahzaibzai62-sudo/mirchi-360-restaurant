@@ -16,7 +16,7 @@
             font-family: 'Poppins', sans-serif;
         }
 
-        body {
+        body {https://ibb.co/fdTXpt0w
             background: #0f0f0f;
             color: white;
         }
@@ -29,7 +29,7 @@
             background: rgba(0,0,0,0.8);
         }
 
-        header img {
+        header img {https://ibb.co/kgDJJ0kJ
             height: 60px;
         }
 
@@ -40,11 +40,11 @@
             font-weight: 500;
         }
 
-        nav a:hover {
+        nav a:hover https://ibb.co/jc554rv{
             color: #ff3c00;
         }
 
-        .hero {
+        .hero {https://ibb.co/1YJ3BfDt
             height: 90vh;
             background: url('your-restaurant-image.jpg') center/cover no-repeat;
             display: flex;
@@ -78,18 +78,18 @@
             text-align: center;
         }
 
-        .section h2 {
+        .section h2 {https://ibb.co/1YJ3BfDt
             margin-bottom: 20px;
             color: #ff3c00;
         }
 
-        .menu img {
+        .menu img https://ibb.co/tTnz8J8y{
             width: 80%;
             border-radius: 10px;
             margin-top: 20px;
         }
 
-        footer {
+        footer https://ibb.co/1YJ3BfDt{
             background: black;
             padding: 20px;
             text-align: center;
@@ -102,7 +102,7 @@
     <!-- HEADER -->
     <header>
         <!-- 🔥 ADD YOUR LOGO HERE -->
-        <img src="your-logo.png" alt="Mirchi 360 Logo">
+        <img src="your-logo.png" alt="Mirchi 360 Logo">https://ibb.co/1YJ3BfDt
 
         <nav>
             <a href="#">Home</a>
@@ -131,15 +131,15 @@
     <section class="section menu" id="menu">
         <h2>Our Menu</h2>
 
-        <!-- 🔥 ADD YOUR MENU IMAGE HERE -->
-        <img src="your-menu.jpg" alt="Menu">
+        <!-- 🔥 ADD YOUR MENU IMAGE HERE -->https://ibb.co/jc554rv
+        <img src="your-menu.jpg" alt="Menu">https://ibb.co/kgDJJ0kJ
     </section>
 
     <!-- CONTACT -->
     <section class="section" id="contact">
         <h2>Contact Us</h2>
-        <p>📍 Karachi, Pakistan</p>
-        <p>📞 +92 300 0000000</p>
+        <p>📍 Sanghar, Sindh</p>
+        <p>📞 +92 3372340714</p>
     </section>
 
     <!-- FOOTER -->
